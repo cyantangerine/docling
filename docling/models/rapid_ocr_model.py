@@ -55,8 +55,10 @@ class RapidOcrModel(BaseOcrModel):
             use_cuda = str(AcceleratorDevice.CUDA.value).lower() in device
             use_dml = accelerator_options.device == AcceleratorDevice.AUTO
             intra_op_num_threads = accelerator_options.num_threads
-
+            gpu_id = None if not use_cuda or device.find(":") == -1 else int(device[device.find(":")+1:])
+            print(f"Rapidocr Using device: {device}, use_cuda: {use_cuda}, use_dml: {use_dml}, gpu_id: {gpu_id}")
             self.reader = RapidOCR(
+                gpu_id=gpu_id,
                 text_score=self.options.text_score,
                 cls_use_cuda=use_cuda,
                 rec_use_cuda=use_cuda,

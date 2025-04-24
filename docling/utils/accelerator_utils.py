@@ -1,3 +1,4 @@
+import inspect
 import logging
 
 import torch
@@ -15,6 +16,26 @@ def decide_device(accelerator_device: str) -> str:
     1. AUTO: Check for the best available device on the system.
     2. User-defined: Check if the device actually exists, otherwise fall-back to CPU
     """
+    
+    # 获取当前调用栈信息
+    stack = inspect.stack()
+    # 上一个调用栈（即调用 print_previous_caller 的函数）
+    previous_frame = stack[1][0]
+    
+    # 获取上一个调用函数的信息
+    previous_function = previous_frame.f_code.co_name
+    previous_module = inspect.getmodule(previous_frame)
+    previous_class = None
+    
+    # 尝试获取上一个调用函数所属的类
+    if 'self' in previous_frame.f_locals:
+        previous_class = previous_frame.f_locals['self'].__class__.__name__
+    elif 'cls' in previous_frame.f_locals:
+        previous_class = previous_frame.f_locals['cls'].__name__
+    
+    print(f"上一个调用函数: {previous_function}")
+    print(f"所属类名: {previous_class}")
+    
     device = "cpu"
 
     has_cuda = torch.backends.cuda.is_built() and torch.cuda.is_available()

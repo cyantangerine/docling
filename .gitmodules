@@ -1,0 +1,9 @@
+[submodule "docling-ibm-models"]
+	path = docling-ibm-models
+	url = https://github.com/cyantangerine/docling-ibm-models
+[submodule "docling-core"]
+	path = docling-core
+	url = https://github.com/docling-project/docling-core
+[submodule "docling-parse"]
+	path = docling-parse
+	url = https://github.com/docling-project/docling-parse

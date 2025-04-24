@@ -71,6 +71,7 @@ class EasyOcrModel(BaseOcrModel):
                     "When `use_gpu and accelerator_options.device == AcceleratorDevice.CUDA` the GPU is used "
                     "to run EasyOCR. Otherwise, EasyOCR runs in CPU."
                 )
+                device = None
                 use_gpu = self.options.use_gpu
 
             download_enabled = self.options.download_enabled
@@ -78,10 +79,10 @@ class EasyOcrModel(BaseOcrModel):
             if artifacts_path is not None and model_storage_directory is None:
                 download_enabled = False
                 model_storage_directory = str(artifacts_path / self._model_repo_folder)
-
+            print(f"EasyOcrModel: {device or use_gpu}")
             self.reader = easyocr.Reader(
                 lang_list=self.options.lang,
-                gpu=use_gpu,
+                gpu=device or use_gpu, # Support for Multi GPU.
                 model_storage_directory=model_storage_directory,
                 recog_network=self.options.recog_network,
                 download_enabled=download_enabled,
