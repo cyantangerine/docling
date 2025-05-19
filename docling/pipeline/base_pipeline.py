@@ -81,6 +81,9 @@ class BasePipeline(ABC):
                     _prepare_elements(conv_res, model),
                     model.elements_batch_size,
                 ):
+                    _log.warning(
+                        f"Enriching {(model.elements_batch_size)} elements with {type(model).__name__}"
+                    )
                     for element in model(
                         doc=conv_res.document, element_batch=element_batch
                     ):  # Must exhaust!
